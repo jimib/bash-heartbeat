@@ -9,6 +9,7 @@ do
 		killapp $1
 		running=false
                 #run the shutdown command
+		python ./email "$1 Shutdown" "Shutting down the computer"
                 sudo shutdown -h now
 		exit
 	else
