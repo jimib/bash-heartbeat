@@ -1,0 +1,30 @@
+#!/bin/sh
+
+running=true
+
+while [ $running = true ]
+do  	
+	if [ "$time" = "$3" ]
+        then
+		killapp $1
+		running=false
+                #run the shutdown command
+                sudo shutdown -h now
+		exit
+	else
+
+		if [ `find $2 -mtime +5s` ]
+		then
+			echo "Restart App"
+			#kill the old app
+			killall $1
+			#wait a second
+			sleep 2
+			#restart the app
+			open ./$1.app
+			#send email notifying restarted app
+			python ./email "$1 Restarted" "$1 was restarted by keepalive"
+		fi	
+	fi
+	sleep 5
+done

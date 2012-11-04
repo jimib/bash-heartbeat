@@ -1,0 +1,34 @@
+#!/usr/bin/python -tt
+
+from email.mime.text import MIMEText
+from datetime import date
+import smtplib
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+SMTP_USERNAME = "your_email@gmail.com"
+SMTP_PASSWORD = "your_password"
+
+EMAIL_TO = ["receipiant1@hotmail.com","receipiant2@yahoo.com"]
+EMAIL_FROM = "your_email@gmail.com"
+
+DATE_FORMAT = "%d/%m/%Y"
+EMAIL_SPACE = ", "
+
+import sys
+from sys import argv
+script, EMAIL_SUBJECT, EMAIL_BODY = argv
+
+def send_email():
+    msg = MIMEText(EMAIL_BODY)
+    msg['Subject'] = EMAIL_SUBJECT + " %s" % (date.today().strftime(DATE_FORMAT))
+    msg['To'] = EMAIL_SPACE.join(EMAIL_TO)
+    msg['From'] = EMAIL_FROM
+    mail = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+    mail.starttls()
+    mail.login(SMTP_USERNAME, SMTP_PASSWORD)
+    mail.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
+    mail.quit()
+
+if __name__=='__main__':
+    send_email()
